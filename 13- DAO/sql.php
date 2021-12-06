@@ -1,45 +1,53 @@
-<?php 
+<?php
 
-class Sql extends PDO{
+class Sql extends PDO {
 
-	private $conn;
+    private $conn;
 
-	public function __constructor(){
+    public function __construct() {
 
-		$this->conn = new PDO("sqlsrv:Database=dbphp; server=localhost\SQLEXPRESS1; ConnectionPooling=0", "sa", "root");
-	}
-
-	private function setParams($statment, $parameters = array()){
-
-		foreach ($parameters as $key => $value) {
-
-				$this->setParam($key, $value);
-			}	
-	}
-
-	private function setparam($statment, $key, $value){
-
-		$statment->bindParam($key, $value);
+    $this->conn = new PDO("sqlsrv:Database=dbphp; server=localhost\SQLEXPRESS1; ConnectionPooling=0", "sa", "root");
+    }
 
 
-	}
+    //O método abaixo só faz a query, a consulta no banco de dados
+    public function query(string $rawQuery, $params = array(), ...$fetchModeArgs){
+  
+        $stmt = $this->conn->prepare($rawQuery); //Query do próprio SQL
 
-	public function query($rawQuery, $params = array()){
+        $this->setParams($stmt, $params);
 
-		$stmt = $this->conn->prepare($rawQuery);
+        $stmt->execute();
 
-		$this->setParams($stmt, $params);
+        return $stmt;
 
-		return $stmt->execute();
-		}
-	}
+    }
 
-	public function select($rawQuery, $params=aray()){
-		$stmt = $this->query($rawQuery, $params);
-		
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
+    private function setParam($statment, $key, $value){
+
+        $statment->bindParam($key, $value);
+
+    }
+
+    private function setParams($statment, $parameters = array()){
+
+        foreach ($parameters as $key => $value) {
+
+            $this->setParam($statment, $key, $value);
+
+        }
+
+    }
+
+    public function select($rawQuery, $params = array()):array
+    {
+
+        $stmt = $this->query($rawQuery, $params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
 }
 
-
- ?>
+?>
