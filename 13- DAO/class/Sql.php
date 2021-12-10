@@ -43,7 +43,7 @@ class Sql extends PDO {
     {
 
         $stmt = $this->query($rawQuery, $params);
-
+        //$stmt->nextRowset();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
