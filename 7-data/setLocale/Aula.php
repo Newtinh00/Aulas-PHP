@@ -9,7 +9,7 @@ echo strftime('%c');
 echo "<br>";
 echo strftime('%D');
 echo "<br>";
-echo strftime('Hoje é %A, dia %d de %B de %Y, exatamente às %H:%M');
+echo strftime('Hoje é %A, dia %d de %b de %Y, exatamente às %H:%M');
 
 
 //https://www.php.net/manual/pt_BR/function.strftime.php
